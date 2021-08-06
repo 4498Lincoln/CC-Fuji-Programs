@@ -1,17 +1,19 @@
+-- This is part of the qtext API, but
+-- it needs to be defined here first.
+local function emPrint(tex, monit)
+    local term = monit or term
+    term.write(tex)
+    local oX, oY = term.getCursorPos()
+    local sX, sY = term.getSize()
+    if sY == oY then
+        term.scroll(1)
+        term.setCursorPos(1, oY)
+    else
+        term.setCursorPos(1, oY + 1) 
+    end
+end
+
 local qtext = {
-    emPrint = function(tex, monit)
-        local term = monit or term
-        term.write(tex)
-        local oX, oY = term.getCursorPos()
-        local sX, sY = term.getSize()
-        if sY == oY then
-            term.scroll(1)
-            term.setCursorPos(1, oY)
-        else
-            term.setCursorPos(1, oY + 1) 
-        end
-    end,
-    
     cursorOffset = function(x, y, monit)
         local term = monit or term
         local oX, oY = term.getCursorPos()
