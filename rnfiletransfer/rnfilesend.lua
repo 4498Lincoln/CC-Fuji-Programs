@@ -1,12 +1,52 @@
--- This program requires that both the qtext API
--- and the redutils API are installed
+-- This is part of the qtext API, but
+-- it needs to be defined here first.
+local function emPrint(tex, monit)
+    local term = monit or term
+    term.write(tex)
+    local oX, oY = term.getCursorPos()
+    local sX, sY = term.getSize()
+    if sY == oY then
+        term.scroll(1)
+        term.setCursorPos(1, oY)
+    else
+        term.setCursorPos(1, oY + 1) 
+    end
+end
 
-if not fs.exists("/fujiAPIs/redutils.lua") then
-    error("Needs redutils API at /fujiAPIs/redutils.lua")
-end
-if not fs.exists("/fujiAPIs/qtext.lua") then
-    error("Needs qtext API at /fujiAPIs/qtext.lua")
-end
+-- Integrate necessary qtext API
+-- functions into the program
+local qtext = {
+    cursorOffset = function(x, y, monit)
+        local term = monit or term
+        local oX, oY = term.getCursorPos()
+        term.setCursorPos(oX + x, oY + y)
+    end,
+    tlit = function(tex, color, pri, monit)
+        local term = monit or term
+        local oldColor = term.getTextColor()
+        term.setTextColor(color)
+        if pri then
+            emPrint(tex, term)
+        else
+            term.write(tex, term)
+        end
+        term.setTextColor(oldColor)
+    end
+}
+
+-- Integrate necessary redutils API
+-- functions into the program
+local redutils = {
+    sreceive = function(prot, sid)
+        while true do
+            local senderId, message, protocol = rednet.receive(prot)
+            if senderId == sid then
+                return senderId, message, protocol
+            end
+        end
+    end
+}
+
 -- Modem to use
 rednet.open("top")
 
