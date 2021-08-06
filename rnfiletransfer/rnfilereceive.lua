@@ -91,6 +91,7 @@ while true do
         print("Find the file in " .. fPath)
         break
     elseif msg ~= "s" then
+	    rednet.close(networkSide)
         error('Received unsatisfactory message "' .. msg .. '" from ID ' .. sid)
     end
 end
