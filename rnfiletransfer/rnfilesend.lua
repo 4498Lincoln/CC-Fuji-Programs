@@ -16,6 +16,15 @@ term.setCursorPos(1, 1)
 qtext.tlit("RedNeT ", colors.red)
 print("File Sender")
 
+-- Set file path
+term.write("File path: ")
+local fPath = io.read()
+
+if not fs.exists(fPath) then
+    qtext.tlit("That file doesn't exist!", colors.red, true)
+    return
+end
+
 -- Set a hostname
 qtext.cursorOffset(0, 1)
 term.write("Hostname: ")
@@ -33,12 +42,10 @@ term.write("Hostname to send to: ")
 local usinHostLookup = io.read()
 local recHost = rednet.lookup("rnfsend", usinHostLookup)
 if not recHost then
-    qtext.tlit("Couldn't establish a connection", colors.red, true)
-    error("Didn't find a computer with hostname specified")
+    qtext.tlit("Didn't find an active computer with hostname specified", colors.red, true)
+    return
 end
-qtext.tlit("Established connection with " .. recHost, colors.green, true)
-term.write("Path of file: ")
-local fPath = io.read()
+qtext.tlit("Found ID " .. recHost, colors.green, true)
 local f = fs.open(fPath, "r")
 print("Sending file...")
 
