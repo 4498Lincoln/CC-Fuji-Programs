@@ -1,8 +1,11 @@
+-- This program requires that both the qtext API
+-- and the redutils API are installed
+
 if not fs.exists("/fujiAPIs/redutils.lua") then
     error("Needs redutils API at /fujiAPIs/redutils.lua")
 end
 if not fs.exists("/fujiAPIs/qtext.lua") then
-    error("Needs qtext API at fujiAPIs/qtext.lua")
+    error("Needs qtext API at /fujiAPIs/qtext.lua")
 end
 -- Modem to use
 rednet.open("top")
