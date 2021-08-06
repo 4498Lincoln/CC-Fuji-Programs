@@ -1,3 +1,6 @@
+-- This program requires the qtext API of the
+-- CC-Fuji-APIs repo in order to function.
+
 if not fs.exists("/fujiAPIs/qtext.lua") then
     error("You need the qtext API installed and in /fujiAPIs!")
 end
