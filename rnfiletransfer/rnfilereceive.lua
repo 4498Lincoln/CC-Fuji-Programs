@@ -1,9 +1,42 @@
--- This program requires the qtext API of the
--- CC-Fuji-APIs repo in order to function.
-
-if not fs.exists("/fujiAPIs/qtext.lua") then
-    error("You need the qtext API installed and in /fujiAPIs!")
-end
+local qtext = {
+    emPrint = function(tex, monit)
+        local term = monit or term
+        term.write(tex)
+        local oX, oY = term.getCursorPos()
+        local sX, sY = term.getSize()
+        if sY == oY then
+            term.scroll(1)
+            term.setCursorPos(1, oY)
+        else
+            term.setCursorPos(1, oY + 1) 
+        end
+    end,
+    
+    cursorOffset = function(x, y, monit)
+        local term = monit or term
+        local oX, oY = term.getCursorPos()
+        term.setCursorPos(oX + x, oY + y)
+    end,
+    
+    setCursorX = function(x, monit)
+        local term = monit or term
+        local oX, oY = term.getCursorPos()
+        term.setCursorPos(x, oY)
+    end,
+    
+    tlit = function(tex, color, pri, monit)
+        local term = monit or term
+        local oldColor = term.getTextColor()
+        term.setTextColor(color)
+        if pri then
+            emPrint(tex, term)
+	        print("")
+        else
+            emPrint(tex, term)
+        end
+        term.setTextColor(oldColor)
+    end
+}
 
 -- Network on this side
 rednet.open("top")
