@@ -55,7 +55,7 @@ while true do
         print("Finished download from " .. sid)
         print("Find the file in " .. fPath)
         break
-    elseif msg ~= "s"
+    elseif msg ~= "s" then
         rednet.close(networkSide)
         error('Received unsatisfactory message during download"' .. msg .. '" from ID ' .. sid)
     end
